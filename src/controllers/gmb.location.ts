@@ -204,7 +204,7 @@ export async function gmbRankingByCoordinates(
               return { rank, total: seen.size, found: true };
             }
 
-            if (seen.size >= 60) {
+            if (seen.size >= 100) {
               return { rank: null, total: seen.size, found: false };
             }
           }
