@@ -4,7 +4,7 @@ import puppeteer, { Browser, Page } from 'puppeteer';
 
 interface GMBRequestBody {
   lat: number | string;
-  lon: number | string;
+  lng: number | string;
   keyword: string;
   companyName: string;
 }
@@ -22,7 +22,7 @@ const DATAIMPULSE_PROXY = {
   HOST: 'gw.dataimpulse.com',
   PORT: 823,
   USER: '1efbf7026ec8a5c15c05',
-  PASS: 'f8fe12a6a8d913b6'
+  PASS: 'ebcb9610b4f3c497'
 };
 
 /* ===================== HELPERS ===================== */
@@ -62,12 +62,12 @@ export async function gmbRankingByCoordinates(
   let browser: Browser | null = null;
 
   try {
-    const { lat, lon, keyword, companyName } = req.body;
-    console.log("heyhryer  ", lat, lon, keyword, companyName );
+    const { lat, lng, keyword, companyName } = req.body;
+    console.log("heyhryer  ", lat, lng, keyword, companyName );
     
-    if (!lat || !lon || !keyword || !companyName) {
+    if (!lat || !lng || !keyword || !companyName) {
       res.status(StatusCodes.BAD_REQUEST).json({
-        message: 'lat, lon, keyword, companyName are required'
+        message: 'lat, lng, keyword, companyName are required'
       });
       return;
     }
@@ -82,7 +82,7 @@ export async function gmbRankingByCoordinates(
         '--disable-setuid-sandbox',
         '--disable-dev-shm-usage',
         '--disable-blink-features=AutomationControlled'
-      ]
+      ]   
     });
 
     const page = await browser.newPage();
@@ -115,7 +115,7 @@ export async function gmbRankingByCoordinates(
     const zoom = 12 + Math.floor(Math.random() * 3); // 14–16
     const url = `https://www.google.com/maps/search/${encodeURIComponent(
       keyword
-    )}/@${lat},${lon},${zoom}z`;
+    )}/@${lat},${lng},${zoom}z`;
     console.log("urlurl",url);
     
     await safeGoto(page, url);
@@ -128,7 +128,7 @@ export async function gmbRankingByCoordinates(
       res.status(StatusCodes.OK).json({
         keyword,
         companyName,
-        location: { lat, lon },
+        location: { lat, lng },
         rank: 1,
         total: 1,
         found: true,
@@ -143,7 +143,7 @@ export async function gmbRankingByCoordinates(
       res.status(StatusCodes.OK).json({
         keyword,
         companyName,
-        location: { lat, lon },
+        location: { lat, lng },
         rank: null,
         total: 0,
         found: false,
@@ -220,7 +220,7 @@ export async function gmbRankingByCoordinates(
     res.status(StatusCodes.OK).json({
       keyword,
       companyName,
-      location: { lat, lon },
+      location: { lat, lng },
       ...result
     });
   } catch (error) {
