@@ -98,7 +98,7 @@ console.log("browser open 33");
     await page.setUserAgent(
       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36'
     );
-
+         console.log("here");
     await page.setViewport({ width: 1366, height: 768 });
     console.log('port set');
     
