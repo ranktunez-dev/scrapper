@@ -97,7 +97,7 @@ export async function gmbRankingByCoordinates(
     await page.setUserAgent(
       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36'
     );
-
+         console.log("here");
     await page.setViewport({ width: 1366, height: 768 });
 
     // Do NOT block CSS (Google Maps breaks)
