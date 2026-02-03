@@ -2,7 +2,7 @@ import hpp from 'hpp';
 import cors from 'cors';
 import http from 'http';
 import helmet from 'helmet';
-import { Logger } from 'winston';
+// import { Logger } from 'winston';
 import { Channel } from 'amqplib';
 import compression from 'compression';
 import { config } from '@scrapper/config';
@@ -16,9 +16,9 @@ import { Application,
   NextFunction, Request, Response, 
   urlencoded 
   } from 'express';
-import { createConnection } from '@scrapper/queues/connection';
+// import { createConnection } from '@scrapper/queues/connection';
 // // import { checkRedisConnection } from '@scrapper/redis';
-import { winstonLogger } from './utilis/looger';
+// import { winstonLogger } from './utilis/looger';
 
 export interface IErrorResponse {
     message: string;
@@ -38,7 +38,7 @@ export interface IError {
 
 
 const SERVER_PORT = 8025;
-const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'apiScrapperService', 'debug');
+// const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'apiScrapperService', 'debug');
 
 export let ScrapperChannel: Channel;
 export class ScrapperServer {
@@ -56,7 +56,7 @@ export class ScrapperServer {
   //   // this.startElasticSearch();
     this.errorHandler(this.app);
   //   // this.startRedis();
-    this.startQueues();
+    // this.startQueues();
     this.startServer(this.app);
   }
 
@@ -101,7 +101,7 @@ export class ScrapperServer {
     // 404 handler
     app.use((req: Request, res: Response) => {
       const fullUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-      log.log('error', `${fullUrl} endpoint does not exist`, '');
+      console.log('error', `${fullUrl} endpoint does not exist`, '');
 
       res
         .status(StatusCodes.NOT_FOUND)
@@ -111,7 +111,7 @@ export class ScrapperServer {
     // Custom Error-Handling Middleware (must have 4 params)
     app.use(
       (error: IErrorResponse, _req: Request, res: Response, _next: NextFunction) => {
-        log.log('error', `ScrapperService error ${error.comingFrom}: `, error);
+        console.log('error', `ScrapperService error ${error.comingFrom}: `, error);
 
         res
           .status(error.statusCode || StatusCodes.INTERNAL_SERVER_ERROR)
@@ -125,16 +125,16 @@ export class ScrapperServer {
 //   //   checkRedisConnection();
 //   // }
 
-  private async startQueues(): Promise<void> {
-    ScrapperChannel = (await createConnection()) as Channel;
-  }
+  // private async startQueues(): Promise<void> {
+  //   ScrapperChannel = (await createConnection()) as Channel;
+  // }
 
   private async startServer(app: Application): Promise<void> {
     try {
       const httpServer: http.Server = new http.Server(app);
       this.startHttpServer(httpServer);
     } catch (error) {
-      log.log('error', 'ScrapperService startServer() error method:', error);
+      console.log('error', 'ScrapperService startServer() error method:', error);
     }
   }
 
@@ -158,12 +158,12 @@ export class ScrapperServer {
 
   private async startHttpServer(httpServer: http.Server): Promise<void> {
     try {
-      log.info(`Scrapper server has started with process id ${process.pid}`);
+      console.info(`Scrapper server has started with process id ${process.pid}`);
       httpServer.listen(SERVER_PORT, () => {
-        log.info(`Scrapper server running on port ${SERVER_PORT}`);
+        console.info(`Scrapper server running on port ${SERVER_PORT}`);
       });
     } catch (error) {
-      log.log('error', 'ScrapperService startServer() error method:', error);
+      console.log('error', 'ScrapperService startServer() error method:', error);
     }
   }
 }
