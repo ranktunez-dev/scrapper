@@ -84,22 +84,24 @@ export async function gmbRankingByCoordinates(
         '--disable-blink-features=AutomationControlled'
       ]   
     });
-
+    console.log("browser open ");
+    
     const page = await browser.newPage();
-
+console.log("browser open22");
     /* ========== PROXY AUTH ========== */
     await page.authenticate({
       username: DATAIMPULSE_PROXY.USER,
       password: DATAIMPULSE_PROXY.PASS
     });
-
+console.log("browser open 33");
     /* ========== STEALTH SETTINGS ========== */
     await page.setUserAgent(
       'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/120 Safari/537.36'
     );
          console.log("here");
     await page.setViewport({ width: 1366, height: 768 });
-
+    console.log('port set');
+    
     // Do NOT block CSS (Google Maps breaks)
     await page.setRequestInterception(true);
     page.on('request', req => {
