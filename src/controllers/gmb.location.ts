@@ -250,7 +250,7 @@ export async function gmbRankingByCoordinates(
 
     /* ========== LAUNCH BROWSER WITH PROXY ========== */
     browser = await puppeteer.launch({
-      headless: false,
+      headless: true,
       args: [
         `--proxy-server=http://${DATAIMPULSE_PROXY.HOST}:${DATAIMPULSE_PROXY.PORT}`,
         '--no-sandbox',
